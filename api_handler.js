@@ -1,7 +1,7 @@
 const axios = require('axios');
 const decode = require('html-entities').decode;
 
-const getTriviaCategories = async () => {
+export const getTriviaCategories = async () => {
     return await axios.get('https://opentdb.com/api_category.php', {
         headers: {
             'Content-Type': 'application/json',
@@ -15,8 +15,8 @@ const getTriviaCategories = async () => {
     });
 };
 
-const getTrivias = async (id) => {
-    return await axios.get(`https://opentdb.com/api.php?amount=10&category=${id}`, {
+export const getTrivias = async (numberOfQuestions, id) => {
+    return await axios.get(`https://opentdb.com/api.php?amount=${numberOfQuestions}&category=${id}`, {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -41,6 +41,3 @@ const removeHTMLEntities = (results) => results.map((result) => {
         incorrect_answers: result.incorrect_answers.map((incorrect_answer) => decode(incorrect_answer))
     }
 });
-
-
-getTrivias(18).then((value) => console.log(value), (error) => console.log('Something went wrong'))

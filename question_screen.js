@@ -3,12 +3,13 @@ import React, { useEffect, useState, useRef } from 'react';
 import { decode } from 'html-entities';
 import * as Haptics from 'expo-haptics';
 import Timer from './timer';
+import { getTrivias } from './api_handler';
 
 export default function QuestionScreen({ route, navigation }) {
 
   const { category } = route.params;
 
-  const NUMBER_OF_QUESTIONS = 5;
+  const NUMBER_OF_QUESTIONS = 10 ;
 
   const [score, setScore] = useState(0);
   const [questions, setQuestions] = useState(null);
@@ -30,31 +31,31 @@ export default function QuestionScreen({ route, navigation }) {
     return colors[index];
   }
 
+  // Utility function to shuffle the options
+  const shuffler = (newElement, array) => {
+    let randomIndex = Math.floor(Math.random() * (array.length + 1)) - 1;
+    array.splice(randomIndex, 0, newElement);
+    return array;
+  };
+
   // Mini hook to set the flag to whether to display a pop-up alert message for the timer
   const check = () => isPopUpDisabled.current;
 
   useEffect(() => {
     (async () => {
-      fetch(`https://opentdb.com/api.php?amount=${NUMBER_OF_QUESTIONS}&category=${category.id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        }
-      }).then((response) => response.json())
-      .then((data) => {
-        if (data.response_code === 0) {
-          let questions = data.results;
-          let { question, correct_answer, incorrect_answers} = questions[questionIndex.current]
-          incorrect_answers.push(correct_answer);
-          setCurrentQuestion(question);
-          setQuestions(questions);
-          setOptions(incorrect_answers);
-          setCorrectAnswer(correct_answer);
-        }
-      }).catch((error) => {
-        console.error(error);
-      });
+
+      let trivias = await getTrivias(NUMBER_OF_QUESTIONS, category.id);
+      if (trivias !== undefined) {
+        let { question, correct_answer, incorrect_answers} = trivias[questionIndex.current];
+
+        let options = shuffler(correct_answer, incorrect_answers);
+
+        setCurrentQuestion(question);
+        setQuestions(trivias);
+        setOptions(options);
+        setCorrectAnswer(correct_answer);
+      }
+
     })();
   }, []);
 
@@ -63,9 +64,9 @@ export default function QuestionScreen({ route, navigation }) {
           questionIndex.current += 1;
           if (questionIndex.current < NUMBER_OF_QUESTIONS) {
             let { question, correct_answer, incorrect_answers} = questions[questionIndex.current];
-            incorrect_answers.push(correct_answer);
+            let options = shuffler(correct_answer, incorrect_answers);
             setCurrentQuestion(question);
-            setOptions(incorrect_answers);
+            setOptions(options);
             setSelectedOptionIndex(null);
             setCorrectAnswer(correct_answer);
           } else {
@@ -111,7 +112,6 @@ export default function QuestionScreen({ route, navigation }) {
 
         questionIndex.current += 1;
 
-        // 
         isPopUpDisabled.current = false;
         setIsPaused(isPopUpDisabled.current);
 
@@ -124,9 +124,9 @@ export default function QuestionScreen({ route, navigation }) {
         if (questionIndex.current < NUMBER_OF_QUESTIONS) {
           // Set the state to the next question, correct answer, options and reset the previously selected option
           let { question, correct_answer, incorrect_answers} = questions[questionIndex.current];
-          incorrect_answers.push(correct_answer);
+          let options = shuffler(correct_answer, incorrect_answers);
           setCurrentQuestion(question);
-          setOptions(incorrect_answers);
+          setOptions(options);
           setSelectedOptionIndex(null);
           setCorrectAnswer(correct_answer);
           setScore(currentScore);
@@ -148,7 +148,7 @@ export default function QuestionScreen({ route, navigation }) {
         <Text style={{color: 'white', fontSize: 30, fontWeight: 'bold'}}>GAME OVER</Text>
         <Text style={{color: 'white', fontSize: 18, marginVertical: 16}}>You have achieved a score of</Text>
         <Text style={{color: 'white', fontSize: 50, fontWeight: 'bold', marginTop: 14, marginBottom: 40}}>{score}</Text>
-        <TouchableOpacity style={{backgroundColor: '#FF9F1C', paddingVertical: 20, paddingHorizontal: 40, borderRadius: 20}} onPress={() => {
+        <TouchableOpacity style={styles.tryAgainButton} onPress={() => {
           navigation.navigate('Categories');
         }}>
           <Text style={{color: 'white', fontSize: 18}}>Try another category</Text>
@@ -263,5 +263,19 @@ const styles = StyleSheet.create({
     padding: 20, 
     borderRadius: 20, 
     alignItems: 'center'
-  }
+  },
+  tryAgainButton: {
+    backgroundColor: '#FF9F1C',
+    paddingVertical: 20,
+    paddingHorizontal: 40,
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
+  },
 });

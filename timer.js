@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Text, View, Alert } from 'react-native';
 import * as Haptics from 'expo-haptics';
+import { DURATION } from './constants.js';
 
 export default function Timer(props) {
-
-    const DURATION = 10;
 
     const [timerValue, setTimerValue] = useState(DURATION);
     const timerRef = useRef(timerValue);

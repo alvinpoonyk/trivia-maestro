@@ -1,15 +1,13 @@
 import { StyleSheet, Text, View, TouchableOpacity, Alert, Dimensions, ActivityIndicator, SafeAreaView } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
-import { decode } from 'html-entities';
 import * as Haptics from 'expo-haptics';
 import Timer from './timer';
 import { getTrivias } from './api_handler';
+import { NUMBER_OF_QUESTIONS } from './constants.js';
 
 export default function QuestionScreen({ route, navigation }) {
 
   const { category } = route.params;
-
-  const NUMBER_OF_QUESTIONS = 10 ;
 
   const [score, setScore] = useState(0);
   const [questions, setQuestions] = useState(null);
@@ -98,13 +96,13 @@ export default function QuestionScreen({ route, navigation }) {
          // Wrong answer selected
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         title = 'Wrong Answer';
-        message = `The correct answer was ${decode(correctAnswer)}.`;
+        message = `The correct answer was ${correctAnswer}.`;
        }
     } else {
       // If no option was selected and the user pressed submit.
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning); 
       title = 'Giving Up?';
-      message = `You did not select any options. The correct answer was ${decode(correctAnswer)}.`;
+      message = `You did not select any options. The correct answer was ${correctAnswer}.`;
     }
 
     Alert.alert(title, message, [
@@ -177,7 +175,7 @@ export default function QuestionScreen({ route, navigation }) {
         <View style={{justifyContent: 'space-evenly', alignItems: 'center', marginVertical: 20}}>
           <Text style={{fontWeight: 'bold', fontSize: 22, color: '#7209B7'}}>Time Left</Text>
            {isPaused ? <Text style={{fontWeight: 'bold', fontSize: 40, marginTop: 10, marginBottom: 20}}>-</Text> : <Timer checkIsGamePaused={check} onTimeOut={onTimeOut}/>}
-          <Text style={{fontWeight: 'bold', fontSize: 22}}>{decode(currentQuestion)}</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 22}}>{currentQuestion}</Text>
         </View>
 
         <View>
@@ -188,7 +186,7 @@ export default function QuestionScreen({ route, navigation }) {
             padding: 14,
             margin: 10,} 
       : [styles.answerButton, {backgroundColor: colorPicker(index)}]} onPress={() => onOptionPressed(index)}>
-            <Text style={styles.answerButtonText}>{decode(option)}</Text>
+            <Text style={styles.answerButtonText}>{option}</Text>
           </TouchableOpacity>)}
           
           <TouchableOpacity style={styles.submitButton} onPress={onSubmitPressed}>

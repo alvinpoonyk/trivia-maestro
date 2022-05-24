@@ -25,9 +25,15 @@ export default function CategoryScreen({ navigation }) {
 
   const onStartGamePressed = () => {
     if (selectedCategoryIndex === null) {
+      // TODO: PROMPT USER AGAIN
       return;
+    } else {
+      navigation.navigate('Questions', {category: categories[selectedCategoryIndex]});
+      // Reset
+      setSelectedCategoryIndex(null);
+      scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });
     }
-    navigation.navigate('Questions', {category: categories[selectedCategoryIndex]});
+
   }
 
   if (categories === null) {
@@ -42,12 +48,11 @@ export default function CategoryScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={{padding: 10}} showsVerticalScrollIndicator={false} ref={scrollViewRef}>
-          <Text style={{marginVertical: 30, fontSize: 24, fontWeight: 'bold', color: '#FFFFFF'}}>Choose a category</Text>
+          <Text style={{marginTop: 50, marginBottom: 20, fontSize: 24, fontWeight: 'bold', color: '#FFFFFF'}}>Select a category</Text>
           {categories.map((category, index) => 
           <TouchableOpacity key={index} style={
-            selectedCategoryIndex  === index ? {marginVertical: 12, backgroundColor: '#FFFFFF', padding: 20, borderRadius: 20} : {marginVertical: 12, backgroundColor: '#7209B7', padding: 20, borderRadius: 20, borderColor: '#FFFFFF', borderWidth: 1}
-            } onPress={() => onCategoryPressed(index)}>
-            <Text style={selectedCategoryIndex === index ? {fontSize: 18, color: '#7209B7'} : {fontSize: 18, color: '#FFFFFF'}}>{category.name}</Text>
+            selectedCategoryIndex  === index ? styles.selectedButton : styles.unselectedButton} onPress={() => onCategoryPressed(index)}>
+            <Text style={selectedCategoryIndex === index ? styles.selectedButtonText : styles.unselectedButtonText }>{category.name}</Text>
           </TouchableOpacity>)}
           <TouchableOpacity style={styles.gameStartButton} onPress={onStartGamePressed}>
             <Text style={{fontSize: 18, color: 'white'}}>Let's begin</Text>
@@ -64,6 +69,44 @@ const styles = StyleSheet.create({
     backgroundColor: '#7209B7',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  selectedButton: {
+    marginVertical: 12, 
+    backgroundColor: '#FFFFFF', 
+    padding: 20, 
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
+  },
+  unselectedButton: {
+    marginVertical: 12, 
+    backgroundColor: '#7209B7', 
+    padding: 20, 
+    borderRadius: 20, 
+    borderColor: '#FFFFFF', 
+    borderWidth: 1,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
+  },
+  unselectedButtonText: {
+    fontSize: 18, 
+    color: '#FFFFFF',
+  },
+  selectedButtonText: {
+    fontSize: 18,
+    color: '#7209B7',
   },
   gameStartButton: {
     marginVertical: 30,

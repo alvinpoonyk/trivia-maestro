@@ -1,3 +1,4 @@
+import React from 'react';
 import { fetchTriviaCategories, fetchTrivias } from "./api_handler.js";
 
 export const getTriviaCategories = async () => {

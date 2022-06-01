@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Alert, Dimensions, ActivityIn
 import React, { useEffect, useState, useRef } from 'react';
 import * as Haptics from 'expo-haptics';
 import Timer from './timer';
-import { getTrivias } from './api_handler';
+import { getTrivias } from './trivia_repository';
 import { NUMBER_OF_QUESTIONS } from './constants.js';
 
 export default function QuestionScreen({ route, navigation }) {

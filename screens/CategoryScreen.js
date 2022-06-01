@@ -1,7 +1,9 @@
 import 'react-native-gesture-handler';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, ActivityIndicator, SafeAreaView } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
-import { getTriviaCategories } from './api_handler';
+import { getTriviaCategories } from '../trivia_repository';
+import GhostButton from './components/GhostButton';
+import CTAButton from './components/CTAButton';
 
 export default function CategoryScreen({ navigation }) {
 
@@ -12,8 +14,10 @@ export default function CategoryScreen({ navigation }) {
   useEffect(() => {
       (async () => {
         let trivia_categories = await getTriviaCategories();
-        if (trivia_categories !== undefined) {
-          setCategories(trivia_categories);
+        if (trivia_categories.status === 'success') {
+          setCategories(trivia_categories.categories);
+        } else {
+          
         }
     })();
   }, []);
@@ -50,13 +54,8 @@ export default function CategoryScreen({ navigation }) {
       <ScrollView contentContainerStyle={{padding: 10}} showsVerticalScrollIndicator={false} ref={scrollViewRef}>
           <Text style={{marginTop: 50, marginBottom: 20, fontSize: 24, fontWeight: 'bold', color: '#FFFFFF'}}>Select a category</Text>
           {categories.map((category, index) => 
-          <TouchableOpacity key={index} style={
-            selectedCategoryIndex  === index ? styles.selectedButton : styles.unselectedButton} onPress={() => onCategoryPressed(index)}>
-            <Text style={selectedCategoryIndex === index ? styles.selectedButtonText : styles.unselectedButtonText }>{category.name}</Text>
-          </TouchableOpacity>)}
-          <TouchableOpacity style={styles.gameStartButton} onPress={onStartGamePressed}>
-            <Text style={{fontSize: 18, color: 'white'}}>Let's begin</Text>
-          </TouchableOpacity>
+          <GhostButton clicked={selectedCategoryIndex === index} key={index} buttonText={category.name} onPress={() => onCategoryPressed(index)}/> )}
+          <CTAButton buttonText="Let's begin" onPress={() => onStartGamePressed()}/>
       </ScrollView>
     </SafeAreaView>
   );
@@ -70,57 +69,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  selectedButton: {
-    marginVertical: 12, 
-    backgroundColor: '#FFFFFF', 
-    padding: 20, 
-    borderRadius: 20,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
-  },
-  unselectedButton: {
-    marginVertical: 12, 
-    backgroundColor: '#7209B7', 
-    padding: 20, 
-    borderRadius: 20, 
-    borderColor: '#FFFFFF', 
-    borderWidth: 1,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
-  },
-  unselectedButtonText: {
-    fontSize: 18, 
-    color: '#FFFFFF',
-  },
-  selectedButtonText: {
-    fontSize: 18,
-    color: '#7209B7',
-  },
-  gameStartButton: {
-    marginVertical: 30,
-    backgroundColor: '#FF9F1C',
-    padding: 20,
-    borderRadius: 20,
-    alignItems: 'center',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
-  }
 });

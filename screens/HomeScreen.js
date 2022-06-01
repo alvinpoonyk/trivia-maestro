@@ -1,9 +1,9 @@
 import 'react-native-gesture-handler';
-import { SVG_XML_STRING } from './constants.js';
+import { SVG_XML_STRING } from '../constants.js';
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, ActivityIndicator, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import CTAButton from './components/CTAButton.js';
 import { SvgXml } from 'react-native-svg';
-
 
 export default function HomeScreen({ navigation }) {
 
@@ -17,9 +17,7 @@ export default function HomeScreen({ navigation }) {
             <Text style={{color: '#FFFFFF', fontSize: 24, fontWeight: 'bold', marginTop: 20}}>TRIVIA MAESTRO</Text>
             <View style={{marginVertical: 20, marginHorizontal: 10}}>
                 <Text style={{color: '#FFFFFF', fontSize: 16, textAlign: 'center' }}>Select a category and challenge yourself to a series of trivia questions</Text>
-                <TouchableOpacity style={styles.gameStartButton} onPress={onBeginPressed}>
-                <Text style={{fontSize: 18, color: 'white'}}>Let's begin</Text>
-                </TouchableOpacity>
+                <CTAButton onPress={() => onBeginPressed()} buttonText="Let's begin"/>
             </View>
         </View>
     );
@@ -33,19 +31,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 10,
     },
-    gameStartButton: {
-        marginVertical: 40,
-        backgroundColor: '#FF9F1C',
-        padding: 20,
-        borderRadius: 20,
-        alignItems: 'center',
-        shadowColor: "#000",
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.23,
-        shadowRadius: 2.62,
-        elevation: 4,
-      }
 });

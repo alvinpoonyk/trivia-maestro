@@ -1,7 +1,10 @@
-const axios = require('axios');
-const decode = require('html-entities').decode;
+import axios from 'axios';
+import { decode } from 'html-entities';
 
-export const getTriviaCategories = async () => {
+// const axios = require('axios');
+// const decode = require('html-entities').decode;
+
+export const fetchTriviaCategories = async () => {
     return await axios.get('https://opentdb.com/api_category.php', {
         headers: {
             'Content-Type': 'application/json',
@@ -15,7 +18,7 @@ export const getTriviaCategories = async () => {
     });
 };
 
-export const getTrivias = async (numberOfQuestions, id) => {
+export const fetchTrivias = async (numberOfQuestions, id) => {
     return await axios.get(`https://opentdb.com/api.php?amount=${numberOfQuestions}&category=${id}`, {
         headers: {
             'Content-Type': 'application/json',

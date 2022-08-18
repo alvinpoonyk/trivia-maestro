@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, ActivityIndicator, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator, SafeAreaView, Alert } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import { getTriviaCategories } from '../trivia_repository';
 import GhostButton from './components/GhostButton';
@@ -29,7 +29,10 @@ export default function CategoryScreen({ navigation }) {
 
   const onStartGamePressed = () => {
     if (selectedCategoryIndex === null) {
-      // TODO: PROMPT USER AGAIN
+      // Prompt user again to select category
+      const title = 'You have not select a category';
+      const message = 'Select a category and click on the button at the bottom of the screen to begin.';
+      Alert.alert(title, message);
       return;
     } else {
       navigation.navigate('Questions', {category: categories[selectedCategoryIndex]});

@@ -1,9 +1,5 @@
 import axios from 'axios';
-import { decode } from 'html-entities';
 import he from'he';
-
-// const axios = require('axios');
-// const decode = require('html-entities').decode;
 
 export const fetchTriviaCategories = async () => {
     return await axios.get('https://opentdb.com/api_category.php', {

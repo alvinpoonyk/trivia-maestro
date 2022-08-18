@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity, Alert, Dimensions, ActivityIndicator, SafeAreaView } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import * as Haptics from 'expo-haptics';
-import Timer from './timer';
+import Timer from './Timer';
 import { getTrivias } from './trivia_repository';
 import { NUMBER_OF_QUESTIONS } from './constants.js';
 

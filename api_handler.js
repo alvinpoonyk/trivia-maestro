@@ -1,5 +1,5 @@
 import axios from 'axios';
-import he from'he';
+import he from 'he';
 
 export const fetchTriviaCategories = async () => {
     return await axios.get('https://opentdb.com/api_category.php', {

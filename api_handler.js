@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { decode } from 'html-entities';
+import he from'he';
 
 // const axios = require('axios');
 // const decode = require('html-entities').decode;
@@ -39,8 +40,8 @@ export const fetchTrivias = async (numberOfQuestions, id) => {
 const removeHTMLEntities = (results) => results.map((result) => {
     return {
         ...result,
-        question: decode(result.question),
-        correct_answer: decode(result.correct_answer),
-        incorrect_answers: result.incorrect_answers.map((incorrect_answer) => decode(incorrect_answer))
+        question: he.decode(result.question),
+        correct_answer: he.decode(result.correct_answer),
+        incorrect_answers: result.incorrect_answers.map((incorrect_answer) => he.decode(incorrect_answer))
     }
 });

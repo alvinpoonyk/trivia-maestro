@@ -4,16 +4,23 @@ import * as Haptics from 'expo-haptics';
 import Timer from './Timer';
 import { getTrivias } from './trivia_repository';
 import { NUMBER_OF_QUESTIONS } from './constants.js';
+import { shuffler, colorPicker} from './utils';
 
 export default function QuestionScreen({ route, navigation }) {
 
   const { category } = route.params;
 
+  // Keep track and set the number of questions answered correctly
   const [score, setScore] = useState(0);
+  // Keep track and set the list of questions
   const [questions, setQuestions] = useState(null);
+  // Store and set the current question the user is answering
   const [currentQuestion, setCurrentQuestion] = useState(null);
+  // Store and set the current correct answer to the question the user is answering
   const [correctAnswer, setCorrectAnswer] = useState(null);
+  // Store and set the options of the question the user is answering
   const [options, setOptions] = useState(null);
+  // Store and set the selected option of the question the user is answering
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
 
   // Reference value to keep track of the index of the current question
@@ -23,25 +30,12 @@ export default function QuestionScreen({ route, navigation }) {
   const isPopUpDisabled = useRef(false);
   const [isPaused, setIsPaused] = useState(isPopUpDisabled.current);
 
-  // Utility function to choose the color option button color
-  const colorPicker = (index) => {
-    let colors = ['#EF476F', '#118AB2', '#FFD166', '#07B084'];
-    return colors[index];
-  }
-
-  // Utility function to shuffle the options
-  const shuffler = (newElement, array) => {
-    let randomIndex = Math.floor(Math.random() * (array.length + 1)) - 1;
-    array.splice(randomIndex, 0, newElement);
-    return array;
-  };
-
   // Mini hook to set the flag to whether to display a pop-up alert message for the timer
   const check = () => isPopUpDisabled.current;
 
   useEffect(() => {
     (async () => {
-
+      // Fetch the questions 
       let trivias = await getTrivias(NUMBER_OF_QUESTIONS, category.id);
       if (trivias !== undefined) {
         let { question, correct_answer, incorrect_answers} = trivias[questionIndex.current];
@@ -140,6 +134,7 @@ export default function QuestionScreen({ route, navigation }) {
     setSelectedOptionIndex(index);
   }
 
+  // When the game has ended, user attempted the number of required questions
   if (questionIndex.current === NUMBER_OF_QUESTIONS) {
     return (
       <View style={styles.container}>
@@ -155,6 +150,7 @@ export default function QuestionScreen({ route, navigation }) {
     );
   }
 
+  // When the application is making an api call
   if (questions === null || options === null) {
     return (
       <View style={styles.container}>
@@ -163,6 +159,7 @@ export default function QuestionScreen({ route, navigation }) {
       </View>
     );
   } else {
+    // When the application has questions fetched from the api
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.card}>

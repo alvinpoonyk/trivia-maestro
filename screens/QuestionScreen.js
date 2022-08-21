@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View, TouchableOpacity, Alert, Dimensions, ActivityIndicator, SafeAreaView } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import * as Haptics from 'expo-haptics';
-import Timer from './Timer';
-import { getTrivias } from './trivia_repository';
-import { NUMBER_OF_QUESTIONS } from './constants.js';
-import { shuffler, colorPicker} from './utils';
+import Timer from '../Timer';
+import { getTrivias } from '../trivia_repository';
+import { NUMBER_OF_QUESTIONS } from '../constants.js';
+import { shuffler, colorPicker} from '../utils';
 
 export default function QuestionScreen({ route, navigation }) {
 

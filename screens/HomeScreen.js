@@ -7,6 +7,8 @@ import { SvgXml } from 'react-native-svg';
 
 export default function HomeScreen({ navigation }) {
 
+    const appName = 'TRIVIA MAESTRO'
+
     const onBeginPressed = () => {
         navigation.navigate('Categories');
     };
@@ -14,7 +16,7 @@ export default function HomeScreen({ navigation }) {
     return(
         <View style={styles.container}>
             <SvgXml xml={SVG_XML_STRING} width="300" height="300" />
-            <Text style={{color: '#FFFFFF', fontSize: 24, fontWeight: 'bold', marginTop: 20}}>TRIVIA MAESTRO</Text>
+            <Text style={{color: '#FFFFFF', fontSize: 24, fontWeight: 'bold', marginTop: 20}}>{appName}</Text>
             <View style={{marginVertical: 20, marginHorizontal: 10}}>
                 <Text style={{color: '#FFFFFF', fontSize: 16, textAlign: 'center' }}>Select a category and challenge yourself to a series of trivia questions</Text>
                 <CTAButton onPress={() => onBeginPressed()} buttonText="Let's begin"/>

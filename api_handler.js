@@ -10,7 +10,7 @@ export const fetchTriviaCategories = async () => {
     }).then((res) => {
         return res.data.trivia_categories;
     }).catch((error) => {
-        console.error('fetchTriviaCategories: An error has occurred.');
+        // console.error('fetchTriviaCategories: An error has occurred.');
     });
 };
 

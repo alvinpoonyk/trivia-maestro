@@ -55,7 +55,6 @@ export default function Timer(props) {
         }
     }, [])
 
-
     return (
         <View>
             <Text style={{fontWeight: 'bold', fontSize: 40, marginTop: 10, marginBottom: 20}}>{timerValue}</Text>

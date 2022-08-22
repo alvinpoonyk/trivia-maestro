@@ -10,7 +10,6 @@ describe('getTriviaCategories Tests', () => {
 
         const fixture  = {"trivia_categories" : [{"id": 9,"name": "General Knowledge"}, {"id": 10,"name": "Entertainment: Books"}]}
 
-
         it('should return a success status', async () => {
             axios.get.mockResolvedValue({"data": fixture})
             const results = await getTriviaCategories()
